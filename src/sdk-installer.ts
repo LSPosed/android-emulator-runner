@@ -47,12 +47,8 @@ export async function installAndroidSdk(
     // accept all Android SDK licenses
     await exec.exec(`sh -c \\"yes | sdkmanager --licenses > /dev/null"`);
 
-    console.log('Installing latest build tools, platform tools, and platform.');
-
-    await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}'> /dev/null"`);
-
     console.log('Installing latest emulator.');
-    await exec.exec(`sh -c \\"sdkmanager --install emulator --channel=${channelId} > /dev/null"`);
+    await exec.exec(`sh -c \\"sdkmanager --install platform-tools emulator --channel=${channelId} > /dev/null"`);
 
     if (emulatorBuild) {
       console.log(`Installing emulator build ${emulatorBuild}.`);
