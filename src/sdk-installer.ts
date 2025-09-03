@@ -4,7 +4,6 @@ import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 
-const BUILD_TOOLS_VERSION = '35.0.0';
 // SDK command-line tools 16.0
 const CMDLINE_TOOLS_URL_MAC = 'https://dl.google.com/android/repository/commandlinetools-mac-12266719_latest.zip';
 const CMDLINE_TOOLS_URL_LINUX = 'https://dl.google.com/android/repository/commandlinetools-linux-12266719_latest.zip';
@@ -47,12 +46,8 @@ export async function installAndroidSdk(
     // accept all Android SDK licenses
     await exec.exec(`sh -c \\"yes | sdkmanager --licenses > /dev/null"`);
 
-    console.log('Installing latest build tools, platform tools, and platform.');
-
-    await exec.exec(`sh -c \\"sdkmanager --install 'build-tools;${BUILD_TOOLS_VERSION}' platform-tools 'platforms;android-${apiLevel}'> /dev/null"`);
-
     console.log('Installing latest emulator.');
-    await exec.exec(`sh -c \\"sdkmanager --install emulator --channel=${channelId} > /dev/null"`);
+    await exec.exec(`sh -c \\"sdkmanager --install platform-tools emulator --channel=${channelId} > /dev/null"`);
 
     if (emulatorBuild) {
       console.log(`Installing emulator build ${emulatorBuild}.`);
